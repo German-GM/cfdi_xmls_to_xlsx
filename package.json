@@ -1,0 +1,20 @@
+{
+  "engines": {
+    "node": "24.8.0",
+    "npm": "11.6.0"
+  },
+  "name": "procesar_xmls",
+  "version": "1.0.0",
+  "description": "",
+  "main": "procesar_xmls.js",
+  "private": true,
+  "scripts": {
+    "dev": "node procesar_xmls.js",
+    "start": "NODE_ENV=production PORT=8085 node procesar_xmls.js"
+  },
+  "dependencies": {
+    "excel4node": "^1.3.2",
+    "moment": "^2.15.2",
+    "xml2json": "^0.9.0"
+  }
+}
