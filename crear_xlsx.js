@@ -7,7 +7,7 @@
 const Excel4node = require('excel4node');
 const Moment     = require('moment');
 const { tryGet } = require('./utils');
-const { FILE_PATH } = require('./constants');
+const { OUTPUT_FILE_PATH } = require('./constants');
 
 const widths = { s: 6, m: 17, l: 44, $: 16 };
 const Col = (title, type, style, getValue, center) => ({ title, type, style, getValue, center });
@@ -142,7 +142,7 @@ function CrearXLSX(dataList, additionalData, callback) {
   if (estadoTitleIndex == -1)
     estadoTitleIndex = columns.findIndex(col => col.title == 'Estado');
 
-  const file        = FILE_PATH;
+  const file        = OUTPUT_FILE_PATH;
   const book        = new Excel4node.Workbook();
   const sheet       = book.addWorksheet('Hoja 1');
   const styles      = createStyles(book);

@@ -7,7 +7,6 @@ const { tryGet, leerXMLs, parseCfdiJSON } = require('./utils');
 const { DEBUG, CARPETA_RAIZ } = require('./constants');
 
 fs.mkdirSync('./test_output', { recursive: true });
-fs.mkdirSync('./exported_xlsx', { recursive: true });
 fs.mkdirSync(CARPETA_RAIZ, { recursive: true });
 
 function parseXMLsToXLSX(body = {}) {
@@ -67,7 +66,4 @@ function exportToExcel(body, req, res) {
   });
 }
 
-
-
-// TEST importFromXml
 parseXMLsToXLSX();
