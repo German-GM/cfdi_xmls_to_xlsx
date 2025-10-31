@@ -57,6 +57,7 @@ exports.leerXMLs = async (carpetaRaiz) => {
 exports.parseCfdiJSON = (cfdi) => {
   const complemento = cfdi['cfdi:Complemento'];
   const timbreFiscalDigital = complemento['tfd:TimbreFiscalDigital'];
+  const cfdiRelacionados = tryGetArray(() => cfdi["cfdi:CfdiRelacionados"]);
 
   const comprobante = {
     CfdiVersion:       cfdi.Version,
@@ -77,6 +78,12 @@ exports.parseCfdiJSON = (cfdi) => {
     TipoCambio:        forceNumber(cfdi.TipoCambio),
     SubTotal:          forceNumber(cfdi.SubTotal),
     Total:             forceNumber(cfdi.Total),
+  }
+
+  if (cfdiRelacionados.length) {
+    const UUIDRelacion = tryGetArray(() => cfdiRelacionados[0]['cfdi:CfdiRelacionado']);
+    comprobante.TipoRelacion = cfdiRelacionados[0].TipoRelacion;
+    comprobante.UUIDRelacion = UUIDRelacion.map(rel => rel.UUID).join(', ');
   }
   
   const emisor = cfdi['cfdi:Emisor'];

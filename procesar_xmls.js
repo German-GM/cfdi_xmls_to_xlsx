@@ -66,4 +66,20 @@ function exportToExcel(body, req, res) {
   });
 }
 
+// Solo para pruebas al requerir ciertos datos de otras fuentes
+function parseJSONData() {
+  const Moment = require('moment');
+  const jsonData = require('./data.json');
+
+  const jason = jsonData.map(json => {
+    return {
+      ...json,
+      Fecha: Moment(json.Fecha).format('DD-MMM-YYYY hh:mm:ss a'),
+    }
+  })
+  .sort((a, b) => Moment(a.Fecha).diff(Moment(b.Fecha)));
+
+  fs.writeFileSync(`./parsed_json_data.json`, JSON.stringify(jason, null, 2));
+}
+
 parseXMLsToXLSX();

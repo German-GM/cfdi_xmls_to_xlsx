@@ -90,6 +90,8 @@ const columns = [
   //   return cfdi.credito.saldo;
   // }),
   // Col('Estado',          'string', 'm', cfdi => cfdi.status == 'CANCELADO' ? 'Cancelado' : 'Vigente', true),
+  Col('Tipo de relación', 'string', 'm', cfdi => cfdi.TipoRelacion, true),
+  Col('Folio fiscal rel.', 'string', 'l', cfdi => cfdi.UUIDRelacion, false),
 ];
 
 /**
@@ -99,7 +101,7 @@ const columns = [
  * @param {Function(string)} callback - Recibe cómo parámetro el nombre del archivo
  */
 function CrearXLSX(dataList, additionalData, callback) {
-  const { isAdmin, cfdiNames, fileName } = additionalData;
+  // const { isAdmin, cfdiNames, fileName } = additionalData;
 
   // Agregar las columnas Timbres y Plan hasta el final para los administradores
   // if (isAdmin && !adminColsAdded) {
