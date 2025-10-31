@@ -3,4 +3,5 @@ package-lock.json
 .~lock*
 test_output
 cfdis_to_export
-*.xlsx
+*.xlsx*
+.db
