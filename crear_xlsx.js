@@ -92,6 +92,11 @@ const columns = [
   // Col('Estado',          'string', 'm', cfdi => cfdi.status == 'CANCELADO' ? 'Cancelado' : 'Vigente', true),
   Col('Tipo de relación', 'string', 'm', cfdi => cfdi.TipoRelacion, true),
   Col('Folio fiscal rel.', 'string', 'l', cfdi => cfdi.UUIDRelacion, false),
+  // Col('Folio sustituido',  'string', 'm', cfdi => cfdi.FolioSustituido, true),
+  // Col('Fecha sustituida',  'string', 'm', cfdi => cfdi.FechaSustituida ? new Date(cfdi.FechaSustituida).toLocaleDateString('es-MX') : null, true),
+  Col('Total sustituido',  'number', '$', cfdi => cfdi.TotalSustituido),
+  // Col('Sustituido',        'string', 's', cfdi => cfdi.Sustituido ? 'Sí' : null, true),
+  Col('Sustituido por',        'string', 's', cfdi => cfdi.SustituidoPorUUID, false),
 ];
 
 /**
