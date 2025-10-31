@@ -33,26 +33,60 @@ async function readXMLs(body) {
     return Promise.reject('No se encontraron XMLs');
   }
 
-  DEBUG && console.log(`Se leyeron ${body.xmls.length} XMLs`);
   return body;
 }
 
 function xmlsToJson(body) {
   DEBUG && console.log('Convirtiendo XMLs a JSON...');
-  body.comprobantes = body.xmls
-    .map(xml => tryGet(() => 
-      xml2json.toJson(xml.contenido, { object: true })['cfdi:Comprobante']
-    ))
+  let comprobantes = body.xmls
+    .map(xml => {
+      const cfdi = tryGet(() => xml2json.toJson(xml.contenido, { object: true })['cfdi:Comprobante']);
+      return cfdi;
+    })
     .filter(cfdi => {
       return cfdi;
     });
-
-  DEBUG && fs.writeFileSync(`./test_output/cfdis_json.json`, JSON.stringify(body.comprobantes, null, 2));
   
-  body.comprobantes = body.comprobantes
+  const retenciones = body.xmls
+    .map(xml => {
+      const retencion = tryGet(() => xml2json.toJson(xml.contenido, { object: true })['retenciones:Retenciones']);
+      return retencion;
+    })
+    .filter(retencion => {
+      return retencion;
+    });
+
+  const otros = body.xmls
+    .map(xml => {
+      const cfdi = tryGet(() => xml2json.toJson(xml.contenido, { object: true })['cfdi:Comprobante']);
+      const retencion = tryGet(() => xml2json.toJson(xml.contenido, { object: true })['retenciones:Retenciones']);
+
+      if (cfdi || retencion) {
+        return null;
+      }
+
+      return xml.ruta;
+    })
+    .filter(otro => {
+      return otro;
+    });
+
+  otros.forEach((otro, i) => {
+    console.log(otro);
+  });
+
+  DEBUG && console.log(`Se leyeron ${body.xmls.length} XMLs`);
+  DEBUG && console.log(`${comprobantes.length} comprobantes.`);
+  DEBUG && console.log(`${retenciones.length} retenciones.`);
+  DEBUG && console.log(`${otros.length} XMLs no identificados.`);
+  DEBUG && console.log(`${comprobantes.length + retenciones.length} comprobantes + retenciones.`);
+  DEBUG && fs.writeFileSync(`./test_output/cfdis_json.json`, JSON.stringify(comprobantes.slice(0, 100), null, 2));
+  
+  comprobantes = comprobantes
     .map(cfdi => parseCfdiJSON(cfdi));
   
-  DEBUG && fs.writeFileSync(`./test_output/cfdis_json_parsed.json`, JSON.stringify(body.comprobantes, null, 2));
+  DEBUG && fs.writeFileSync(`./test_output/cfdis_json_parsed.json`, JSON.stringify(comprobantes.slice(0, 100), null, 2));
+  body.comprobantes = comprobantes;
   return body;
 }
 
